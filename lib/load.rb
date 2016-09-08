@@ -16,21 +16,22 @@ class Load
     if File.file?(filename) == false
       puts "That file does not exist"
     else
-      # contents == big array of data
+      # contents == CSV table
       contents = CSV.read filename.to_s, headers: true, header_converters: :symbol
-      # iterate through contents
-      # and store @attendees/people/row instances in a new array
+      # iterate through contents and store people as instances in @attendees array
+      # @attendees is a huge array of instances & their associated characeristics
+      # (instance variables)
       @attendees = contents.map do |row|
         Attendee.new(row)
-      # send each row to an attendee or person model
       end
-      # @people = [<Person # @first_name = "mark" @last_name = "miranda" @zip = 80219><Person # @first_name="brad"]
     end
   end
 
   def find_by(attribute, search_term)
+    #queue is initialized with Load, find_by clears queue
     @queue.clear
     attendees.find_all do |attendee|
+              #party method shovels instances into find_matches
       @queue.party(attendee) if attendee.send(attribute) == Cleaner.clean_name(search_term)
     end
   end
