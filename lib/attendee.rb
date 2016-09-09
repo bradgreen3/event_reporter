@@ -3,6 +3,7 @@ require './lib/cleaner'
 class Attendee
   include Cleaner
   attr_reader :first_name, :last_name, :zip, :email, :phone, :street, :city, :state
+  attr_accessor :district
 
   def initialize(row)
     @first_name = Cleaner.clean_name(row[:first_name])
@@ -13,5 +14,6 @@ class Attendee
     @city = Cleaner.clean_name(row[:city])
     @state = Cleaner.clean_name(row[:state])
     @zip = Cleaner.clean_zip(row[:zipcode])
+    @district = ""
   end
 end

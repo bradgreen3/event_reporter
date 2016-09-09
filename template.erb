@@ -7,7 +7,7 @@
 <body>
   <table border="1">
   <tr><th>First Name</th><th>Last Name</th><th>Email</th><th>Zip Code</th>
-  <th>City</th><th>State</th><th>Street</th><th>Home Phone</th></tr>
+  <th>City</th><th>State</th><th>Street</th><th>Home Phone</th><th>District</th></tr>
     <% @find_matches.each do |att| %>
       <tr>
         <td><%= "#{att.first_name}" %></td>
@@ -18,6 +18,7 @@
         <td><%= "#{att.state}" %></td>
         <td><%= "#{att.street}" %></td>
         <td><%= "#{att.phone}" %></td>
+        <td><%= "#{att.district}" %></td>
       </tr>
     <% end %>
   </table>

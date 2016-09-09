@@ -1,5 +1,7 @@
 require 'csv'
 require 'erb'
+require 'json'
+require 'net/http'
 
 class Que
 
@@ -25,13 +27,13 @@ class Que
     #puts column headers for terminal table
     puts beautify_short("LAST NAME") + beautify_short("FIRST NAME") + beautify_long("EMAIL") +
       beautify_short("ZIPCODE") + beautify_short("CITY") + beautify_short("STATE") +
-      beautify_long("ADDRESS") + beautify_short("PHONE") #+ beautify("DISTRICT")
+      beautify_long("ADDRESS") + beautify_short("PHONE") + beautify_short("DISTRICT")
 
     #puts each instance variable of found matches beneath header, one at a time
     found_matches.each do |att|
       puts beautify_short(att.last_name) + beautify_short(att.first_name) + beautify_long(att.email) +
       beautify_short(att.zip) + beautify_short(att.city) + beautify_short(att.state) + beautify_long(att.street) +
-      beautify_short(att.phone) #+ beautify(att.district)
+      beautify_short(att.phone) + beautify_short(att.district)
     end
   end
 
@@ -59,10 +61,10 @@ class Que
     filename = "output/#{filename}"
 
     CSV.open(filename, "wb") do |csv|
-      headers = ["first_name", "last_name", "email_address", "zip", "city", "state", "street", "homephone"]
+      headers = ["first_name", "last_name", "email_address", "zip", "city", "state", "street", "homephone", "district"]
       csv << headers
       @find_matches.each do |attendee|
-          csv << [attendee.send("first_name"), attendee.send("last_name"), attendee.send("email"), attendee.send("zip"), attendee.send("city"), attendee.send("state"), attendee.send("street"), attendee.send("phone")]
+          csv << [attendee.send("first_name"), attendee.send("last_name"), attendee.send("email"), attendee.send("zip"), attendee.send("city"), attendee.send("state"), attendee.send("street"), attendee.send("phone"), attendee.send("district")]
       end
     end
   end
@@ -81,16 +83,18 @@ class Que
       end
     end
   end
+
+  def district
+    if @find_matches.count < 10 && @find_matches.count > 0
+    api_key = "cc95472b28e4407abc03eb38550200d3"
+    @find_matches.each do |attendee|
+       uri = URI("http://congress.api.sunlightfoundation.com/districts/locate?zip=#{attendee.zip}&apikey=#{api_key}")
+       district = (JSON.load(Net::HTTP.get(uri))["results"].first)
+       attendee.district = district["district"].to_s
+     end
+     else
+       puts "Too many attendees in queue to find district"
+   end
+  end
+
 end
-
-#queue export html <filename.csv>
-#queue district
-
-# a = "<table>
-# <tr><th>Last Name</th><th>First Name
-# @find_matches.each do |att|
-#   "<tr><td>att.last_name</td><td>#{att.first_name}</td>"
-# end
-# </table>"
-#
-# File.write(filename.html, a)

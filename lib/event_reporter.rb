@@ -25,7 +25,7 @@ while command != 'q'
     puts "You must enter an attribute and search term"
   elsif command == 'find' && multiple_words[1].class != nil
     user_att = multiple_words[1]
-    user_search = multiple_words[2]
+    user_search = multiple_words[2..-1].join(" ")
     puts "Results added to the queue"
     l.find_by(user_att, user_search)
   elsif command == 'queue' && multiple_words[1] == 'count'
@@ -43,6 +43,8 @@ while command != 'q'
   elsif command == 'queue' && multiple_words[1] == 'export' && multiple_words[2] == 'html'
     puts "Queue exported to <#{multiple_words[3]}>"
     l.queue.export_html(multiple_words[3])
+  elsif command == 'queue' && multiple_words[1] == 'district'
+    l.queue.district
   else
     puts "Invalid entry"
   end
