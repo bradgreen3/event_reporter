@@ -23,7 +23,6 @@ module Cleaner
   end
 
   def self.clean_name(name)
-    name.to_s.capitalize.strip
-    # name.to_s.gsub(/\W+/, '').capitalize
+    name.to_s.strip.gsub(/\W|\d/, "").capitalize
   end
 end

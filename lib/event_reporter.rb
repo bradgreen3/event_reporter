@@ -4,13 +4,13 @@ require_relative 'help'
 
 command = ""
 l = Load.new
-while command != 'q'
+while command != 'quit'
   print "Enter command: "
   input = gets.chomp
   multiple_words = input.split(" ")
   command = multiple_words[0]
 
-  if command == 'q'
+  if command == 'quit'
     puts "Exiting Event Reporter"
   elsif command == 'help'
     puts Help.give_help(multiple_words[1..-1])
@@ -44,30 +44,9 @@ while command != 'q'
     puts "Queue exported to <#{multiple_words[3]}>"
     l.queue.export_html(multiple_words[3])
   elsif command == 'queue' && multiple_words[1] == 'district'
+    puts "Added district information to queue"
     l.queue.district
   else
     puts "Invalid entry"
   end
 end
-
-
-# class EventReporter
-#   def initialize
-#     @command = ""
-#     @attribute1 = ""
-#     @attribute2 = ""
-#     @search_term = ""
-#   end
-#
-#   def run
-#     while @command != "quit"
-#       puts "please enter a command:"
-#       @command = gets.chomp
-#     end
-#   end
-#
-#
-# end
-#
-# er = EventReporter.new
-# er.run

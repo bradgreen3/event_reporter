@@ -24,12 +24,9 @@ class Que
   end
 
   def print(found_matches = @find_matches)
-    #puts column headers for terminal table
     puts beautify_short("LAST NAME") + beautify_short("FIRST NAME") + beautify_long("EMAIL") +
       beautify_short("ZIPCODE") + beautify_short("CITY") + beautify_short("STATE") +
       beautify_long("ADDRESS") + beautify_short("PHONE") + beautify_short("DISTRICT")
-
-    #puts each instance variable of found matches beneath header, one at a time
     found_matches.each do |att|
       puts beautify_short(att.last_name) + beautify_short(att.first_name) + beautify_long(att.email) +
       beautify_short(att.zip) + beautify_short(att.city) + beautify_short(att.state) + beautify_long(att.street) +
@@ -46,18 +43,14 @@ class Que
   end
 
   def print_by(attribute)
-    #sorted variable = instances(people) sorted by given attribute
     sorted = @find_matches.sort_by do |attendee|
-      #sort instances by given attribute
       attendee.send(attribute)
     end
-    #call print method w/array of instances sorted by attribute
     print(sorted)
   end
 
   def save_to(filename)
     Dir.mkdir("output") unless Dir.exists?("output")
-
     filename = "output/#{filename}"
 
     CSV.open(filename, "wb") do |csv|
@@ -96,5 +89,4 @@ class Que
        puts "Too many attendees in queue to find district"
    end
   end
-
 end
